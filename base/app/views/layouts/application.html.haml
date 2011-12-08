@@ -4,6 +4,8 @@
     %title <%= app_name.humanize %>
     = stylesheet_link_tag    "application"
     = javascript_include_tag "application"
+    /[if lt IE 9]
+      = javascript_include_tag "html5"
     = csrf_meta_tags
   %body
     .topbar

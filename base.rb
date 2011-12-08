@@ -79,6 +79,9 @@ append_file 'app/assets/javascripts/application.js', <<-BOOTSTRAP
 //= require bootstrap
 BOOTSTRAP
 
+# Remove require tree from application.js ... you now need to add your own requires smartly :)
+gsub_file 'app/assets/javascripts/application.js', %r{^//= require_tree .\n}, ''
+
 # Setup use of Foreman
 gem 'foreman'
 template 'Procfile'
@@ -94,7 +97,8 @@ run 'bundle install'
 
 # Remove the default application layout and add a new one using Haml
 remove_file 'app/views/layouts/application.html.erb'
-template "app/views/layouts/application.html.haml"
+template 'app/views/layouts/application.html.haml'
+template 'app/assets/javascripts/html5.js'
 
 # Setup new HomeController as the application root
 generate :controller, "home"
