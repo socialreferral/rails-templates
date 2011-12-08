@@ -1,7 +1,10 @@
-# Add base directory to search paths
-source_paths << "#{File.dirname(__FILE__)}/base"
+# Prepend base directory to search paths for the generators (so our templates can override base Rails templates)
+source_paths.unshift("#{File.dirname(__FILE__)}/base")
 
-# Create a development group in the Gemfile
+# Enable Unicorn in the Gemfile
+gsub_file 'Gemfile', /^# (gem 'unicorn.*)$/, '\1'
+
+# Create a development group in the Gemfile and add gems to it
 insert_into_file 'Gemfile', before: "group :test do\n" do
 <<-GEMFILE
 group :development do
@@ -14,15 +17,52 @@ end
 GEMFILE
 end
 
-# Enable Unicorn in the Gemfile
-gsub_file 'Gemfile', /^# (gem 'unicorn.*)$/, '\1'
+# Add default set of gems to :development and :test groups
+insert_into_file 'Gemfile', before: "group :test do\n" do
+<<-GEMFILE
+group :development, :test do
+  # Enable the use of Guard
+  gem 'guard'
+  gem 'rb-inotify' if RbConfig::CONFIG['target_os'] == 'linux'
+  gem 'libnotify' if RbConfig::CONFIG['target_os'] == 'linux'
 
-# Add default set of Gems
-append_file 'Gemfile', "\n"
+  # Add Guard to run unit tests
+  gem 'guard-test'
+
+  # Add Guard to run arbitrary processes and commands (as specified in the Guardfile)
+  gem 'guard-process'
+
+  # Enable the use of Spork with Guard
+  gem 'spork', '~> 0.9.0rc'
+  gem 'spork-testunit', :git => "https://github.com/socialreferral/spork-testunit.git", :branch => "feature/drbport"
+  gem 'guard-spork'
+end
+
+GEMFILE
+end
+
+# Add default set of gems to :test group
+insert_into_file 'Gemfile', after: "group :test do\n" do
+<<-GEMFILE
+  # Profiling gem
+  gem 'ruby-prof'
+
+  # Enables the use of FactoryGirl for testing
+  gem 'factory_girl_rails'
+
+  # Enable the use of Mocha for mocking and stubbing in tests
+  gem 'mocha', :require => false
+GEMFILE
+end
+
+# Add default Gems for the Rails application itself
+append_to_file 'Gemfile', <<-GEMFILE
+
 gem 'haml'
 gem 'therubyracer'
 gem 'simple_form'
 gem 'inherited_resources'
+GEMFILE
 
 # Delete the default README
 remove_file 'README'
@@ -39,6 +79,19 @@ append_file 'app/assets/javascripts/application.js', <<-BOOTSTRAP
 //= require bootstrap
 BOOTSTRAP
 
+# Setup use of Foreman
+gem 'foreman'
+template 'Procfile'
+
+# Setup use of Guard and Spork
+@spork_port = ask("What port number do you want to use for Spork? [8989]")
+@spork_port = "8989" if @spork_port.blank?
+template 'Guardfile'
+template 'test/test_helper.rb', force: true
+
+# Install gems (so the generators below won't complain about missing gems)
+run 'bundle install'
+
 # Remove the default application layout and add a new one using Haml
 remove_file 'app/views/layouts/application.html.erb'
 template "app/views/layouts/application.html.haml"
@@ -51,5 +104,5 @@ remove_file 'public/index.html'
 gsub_file 'config/routes.rb', %r{^  # root :to => 'welcome#index'$}, "  root to: 'home#index'"
 
 # Set the project in a new Git repository
-git :init
-git add: '.', commit: '-m "Initial commit"'
+# git :init
+# git add: '.', commit: '-m "Initial commit"'
