@@ -28,5 +28,6 @@ This code is released under the MIT license.
 Authors
 ------
 [Mark Kremer](https://github.com/mkremer)
+
 [Andre Meij](https://github.com/ahmeij)
 
