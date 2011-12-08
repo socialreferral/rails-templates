@@ -10,8 +10,12 @@ insert_into_file 'Gemfile', before: "group :test do\n" do
 group :development do
   # Tweaks the code reloading behavior in development mode
   gem 'rails-dev-tweaks'
+
   # Adds template generators for Haml
   gem 'haml-rails'
+
+  # V8 runtime to compile CoffeeScript
+  gem 'therubyracer'
 end
 
 GEMFILE
@@ -58,9 +62,13 @@ end
 # Add default Gems for the Rails application itself
 append_to_file 'Gemfile', <<-GEMFILE
 
+# Adds Haml template rendering
 gem 'haml'
-gem 'therubyracer'
+
+# Simple form to simply working with forms
 gem 'simple_form'
+
+# Inherited resources to simply the development of CRUD controllers
 gem 'inherited_resources'
 GEMFILE
 
