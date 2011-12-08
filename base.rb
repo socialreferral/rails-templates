@@ -106,6 +106,9 @@ template 'test/test_helper.rb', force: true
 # Install gems (so the generators below won't complain about missing gems)
 run 'bundle install'
 
+# Setup simple_form
+generate "simple_form:install"
+
 # Remove the default application layout and add a new one using Haml
 remove_file 'app/views/layouts/application.html.erb'
 template 'app/views/layouts/application.html.haml'
