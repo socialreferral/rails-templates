@@ -7,6 +7,7 @@ Templates
 At the moment there is only one template: base.rb
 
 This template sets up a base Rails 3.1 app with the following included:
+
 - [Twitter Bootstrap using Sass](https://github.com/thomas-mcdonald/bootstrap-sass)
 - Haml
 - Foreman
@@ -15,6 +16,7 @@ This template sets up a base Rails 3.1 app with the following included:
 - inherited_resources
 
 The following development tools are included:
+
 - rails-dev-tweaks
 - haml-rails
 - Spork
