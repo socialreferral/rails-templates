@@ -1,0 +1,41 @@
+!!!
+%html
+  %head
+    %title <%= app_name.humanize %>
+    = stylesheet_link_tag    "application"
+    = javascript_include_tag "application"
+    = csrf_meta_tags
+  %body
+    .topbar
+      .fill
+        .container
+          %a.brand{href: '#'} Project name
+          %ul.nav
+            %li.active
+              %a{href: '#'} Home
+            %li
+              %a{href: '#about'} About
+            %li
+              %a{href: '#contact'} Contact
+          %form.pull-right{action: ''}
+            %input.input-small{placeholder: "Username", type: "text"}/
+            %input.input-small{placeholder: "Password", type: "password"}/
+            %button.btn{type: "submit"} Sign in
+    .container
+      .content
+        .page-header
+          %h1
+            Page name
+            %small Supporting text or tagline
+        .row
+          .span4
+            %h2 Sidebar
+            = yield :sidebar
+          .span12
+            - flash.each do |name, message|
+              .alert-message.fade.in{class: name, 'data-alert' => 'alert'}
+                %a.close{href: "#"} ×
+                %p= message
+            = yield
+      %footer
+      %p &copy; SocialReferral 2011
