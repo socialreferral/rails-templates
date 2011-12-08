@@ -108,5 +108,5 @@ remove_file 'public/index.html'
 gsub_file 'config/routes.rb', %r{^  # root :to => 'welcome#index'$}, "  root to: 'home#index'"
 
 # Set the project in a new Git repository
-# git :init
-# git add: '.', commit: '-m "Initial commit"'
+git :init
+git add: '.', commit: '-m "Initial commit"'
