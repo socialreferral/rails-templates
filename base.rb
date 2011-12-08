@@ -56,6 +56,7 @@ insert_into_file 'Gemfile', after: "group :test do\n" do
 
   # Enable the use of Mocha for mocking and stubbing in tests
   gem 'mocha', :require => false
+
 GEMFILE
 end
 
@@ -70,6 +71,9 @@ gem 'simple_form'
 
 # Inherited resources to simply the development of CRUD controllers
 gem 'inherited_resources'
+
+# Foreman eases the running of all the processes for your app
+gem 'foreman'
 GEMFILE
 
 # Delete the default README
@@ -91,7 +95,6 @@ BOOTSTRAP
 gsub_file 'app/assets/javascripts/application.js', %r{^//= require_tree .\n}, ''
 
 # Setup use of Foreman
-gem 'foreman'
 template 'Procfile'
 
 # Setup use of Guard and Spork
