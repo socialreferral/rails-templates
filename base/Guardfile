@@ -24,7 +24,7 @@ group :development do
 end
 
 group :<%= app_name -%> do
-  guard 'process', :name => "Rails", :command => "bundle exec unicorn", :stop_signal => "KILL" do
+  guard 'process', :name => "Rails", :command => "bundle exec unicorn" do
     watch('Gemfile.lock')
     watch(%r{^config(?!\/locale)/.*})
     watch(%r{^lib/.*})
