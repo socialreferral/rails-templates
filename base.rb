@@ -67,7 +67,7 @@ append_to_file 'Gemfile', <<-GEMFILE
 gem 'haml'
 
 # Simple form to simply working with forms
-gem 'simple_form'
+gem 'simple_form', git: 'https://github.com/plataformatec/simple_form.git'
 
 # Inherited resources to simply the development of CRUD controllers
 gem 'inherited_resources'
@@ -108,6 +108,9 @@ run 'bundle install'
 
 # Setup simple_form
 generate "simple_form:install"
+
+# Update the simple_form config
+template 'config/initializers/simple_form.rb'
 
 # Remove the default application layout and add a new one using Haml
 remove_file 'app/views/layouts/application.html.erb'
